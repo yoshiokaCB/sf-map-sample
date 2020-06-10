@@ -14,9 +14,9 @@ Globals:
 
 Resources:
   CheckResponseStateMachine:
-    Type: AWS::Serverless::StateMachine # More info about State Machine Resource: https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-statemachine.html
+    Type: AWS::Serverless::StateMachine 
     Properties:
-      DefinitionUri: s3://[bucket_name]/statemachine/check_response_v2.json
+      DefinitionUri: s3://[bucket_name]/statemachine/check_response.json
       DefinitionSubstitutions:
         CheckResponseFunctionArn: !GetAtt CheckResponseFunction.Arn
       Policies:
