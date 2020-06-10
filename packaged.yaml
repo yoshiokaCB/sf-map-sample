@@ -1,0 +1,48 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'response-check
+
+  Sample SAM Template for response-check
+
+  '
+Parameters:
+  S3objectPath:
+    Type: String
+    Default: s3://lambda-yoshi20191125/statemachine/check_response_v2.json
+Globals:
+  Function:
+    Timeout: 120
+    Handler: app.lambda_handler
+    Runtime: ruby2.5
+    MemorySize: 256
+Resources:
+  CheckResponseStateMachine:
+    Type: AWS::Serverless::StateMachine
+    Properties:
+      DefinitionUri:
+        Ref: S3objectPath
+      DefinitionSubstitutions:
+        CheckResponseFunctionArn:
+          Fn::GetAtt:
+          - CheckResponseFunction
+          - Arn
+      Policies:
+      - LambdaInvokePolicy:
+          FunctionName:
+            Ref: CheckResponseFunction
+  CheckResponseFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://lambda-yoshi20191125/e9e514bd4dd99c69f94860bfa137c2ec
+Outputs:
+  CheckResponseStateMachineArn:
+    Description: State machine ARN
+    Value:
+      Ref: CheckResponseStateMachine
+  CheckResponseStateMachineRole:
+    Description: IAM Role created for State machine based on the specified SAM Policy
+      Templates
+    Value:
+      Fn::GetAtt:
+      - CheckResponseStateMachineRole
+      - Arn

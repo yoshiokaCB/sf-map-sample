@@ -1,0 +1,22 @@
+{
+    "Comment": "A state machine that check website response.",
+    "StartAt": "Check Response",
+    "States": {
+        "Check Response": {
+            "Type": "Map",
+            "ItemsPath": "$.siteList",
+            "MaxConcurrency": 1,
+            "Iterator": {
+              "StartAt": "IteratorState",
+              "States": {
+                "IteratorState": {
+                  "Type": "Task",
+                  "Resource": "${CheckResponseFunctionArn}",
+                  "End": true
+                }
+              }
+            },
+            "End": true
+        }
+    }
+}
